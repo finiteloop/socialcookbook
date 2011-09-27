@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <div class="breadcrumbs">
+    <a href="/">Social Cookbook</a> &rsaquo;
+    {% if recipe %}
+      <a href="/category?name={% raw url_escape(recipe["category"]) %}">{{ recipe["category"] }}</a> &rsaquo;
+      <a href="{{ reverse_url("recipe", recipe["slug"]) }}">{{ recipe["title"] }}</a>
+    {% else %}
+      <a href="">New Recipe</a>
+    {% end %}
+  </div>
+  <form action="{{ request.path }}" method="post" class="edit">
+    {% if not recipe %}
+      <h2>Recipe Title</h2>
+    {% end %}
+    <input id="title" name="title"{% if recipe %} value="{{ recipe["title"] }}"{% end %}/>
+    <div class="note">Where did you find this recipe? What does it mean to you?</div>
+    <h2>Personal Note</h2>
+    <textarea name="description">{{ recipe["description"] if recipe else "" }}</textarea>
+    <div class="note">List each ingredient on a separate line.</div>
+    <h2>Ingredients</h2>
+    <textarea name="ingredients">{{ recipe["ingredients"] if recipe else "" }}</textarea>
+    <h2>Instructions</h2>
+    <textarea name="instructions">{{ recipe["instructions"] if recipe else "" }}</textarea>
+    <h2>Category</h2>
+    <div>
+      {% if categories %}
+        <select name="category">
+	  {% for category in categories %}
+	    <option{% if recipe and recipe["category"] == category %} selected{% end %}>{{ category }}</option>
+	  {% end %}
+	</select>
+	<a href="" class="newcategory">New category</a>
+      {% else %}
+        <input name="category"{% if recipe %} value="{{ recipe["category"] }}"{% end %}/>
+      {% end %}
+    </div>
+    <div class="buttons">
+      <button type="submit" class="primary">Save Recipe</button>
+      <button type="button" onclick="location.href = '{{ reverse_url("recipe", recipe["slug"]) if recipe else "/" }}'">Cancel</button>
+    </div>
+    {% if recipe %}
+      <input type="hidden" name="id" value="{{ recipe["id"] }}"/>
+    {% end %}
+  </form>
+{% end %}
+
+{% block bottom %}
+  <script>document.getElementById("title").focus()</script>
+{% end %}

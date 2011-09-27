@@ -1,0 +1,24 @@
+<div class="index">
+  <div class="lhs">
+  {% set i = 0 %}
+  {% set extra_column = False %}
+  {% set num_recipes = sum(len(r) for r in categories.values()) %}
+  {% for category in sorted(categories.keys()) %}
+    {% if len(categories) > 1 %}
+      <h3>{{ category }}</h3>
+    {% end %}
+    <ul>
+      {% for recipe in categories[category] %}
+        <li><a href="{{ reverse_url("recipe", recipe["slug"]) }}">{{ recipe["title"] }}</a></li>
+	{% set i += 1 %}
+      {% end %}
+    </ul>
+    {% if i > num_recipes / 2 and not extra_column %}
+      {% set extra_column = True %}
+      </div>
+      <div class="rhs">
+    {% end %}
+  {% end %}
+  </div>
+</div>
+

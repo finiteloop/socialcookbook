@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <div class="home">
+    {% if user_recent %}
+      <div class="section">
+	<h2>Recently added recipes</h2>
+	{% module RecipeClips(user_recent) %}
+      </div>
+    {% end %}
+    {% if friends_recent %}
+      <div class="section">
+	<h2>Recipes from friends</h2>
+	{% module RecipeClips(friends_recent) %}
+      </div>
+    {% end %}
+    {% if all_recipes %}
+      <div class="all">
+	<h2>All my recipes</h2>
+	{% module RecipeList(all_recipes) %}
+      </div>
+    {% end %}
+  </div>
+{% end %}
+
+{% block sidebar %}
+  <div class="actions">
+    <a href="/edit" class="button">Add a new recipe</a>
+  </div>
+  {% module ActivityStream(num=10) %}
+{% end %}

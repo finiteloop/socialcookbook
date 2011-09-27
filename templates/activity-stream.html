@@ -1,0 +1,6 @@
+<div class="activity">
+  <h3>Recent activity</h3>
+  {% for item in activity %}
+    {% module ActivityItem(user=item["user"], recipe=item["recipe"], date=item["created"], action=item["action"]) %}
+  {% end %}
+</div>

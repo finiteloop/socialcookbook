@@ -1,0 +1,11 @@
+<div class="actions">
+  {% if clipped %}
+    <button class="cook" recipe="{{ recipe["id"] }}">I just cooked this</button>
+    <div class="help">Let your friends know you cooked this, and add it to
+      your Facebook profile</div>
+  {% else %}
+    <button class="clip" recipe="{{ recipe["id"] }}">Add to my cookbook</button>
+    <div class="help">Put this recipe in your cookbook, and add it to your
+      Facebook profile</div>
+  {% end %}
+</div>

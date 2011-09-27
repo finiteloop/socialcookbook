@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{% block title %}Social Cookbook{% end %}</title>
+    <link rel="stylesheet" href="{{ options.compiled_css_url if options.compiled_css_url else "/static/css/base.css" }}">
+    {% block head %}{% end %}
+  </head>
+  <body>
+    {% block top %}{% end %}
+    <div id="header">
+      <div class="column">
+	{% if current_user %}
+	  <ul>
+	    <li><a href="/">My Cookbook</a></li>
+	    <li><a href="/edit">Add a Recipe</a></li>
+	    <li><a href="{{ current_user["link"] }}">{{ current_user["name"] }}</a></li>
+	  </ul>
+	{% end %}
+	<a href="/" id="logo"></a>
+      </div>
+    </div>
+    <div id="page" class="column">
+      {% if error_message %}
+        <div id="error"><div>{{ error_message }}</div></div>
+      {% end %}
+      <div id="sidebar">{% block sidebar %}{% end %}</div>
+      <div id="body">{% block body %}{% end %}</div>
+    </div>
+    <div class="dialog" id="uploaddialog">
+      <form action="/a/upload" method="post" enctype="multipart/form-data">
+	<h2>Upload a Photo</h2>
+	<div class="body">
+	  <p>Recipe photos must be at least 300 pixels tall and 300 pixels wide.</p>
+	  <div>
+	    <input type="file" name="file"/>
+	    <input type="hidden" name="recipe">
+	  </div>
+	</div>
+	<div class="buttons">
+	  <div class="loading">Uploading...</div>
+	  <button type="submit">Upload</button>
+	  <button type="button" class="dialogcancel">Cancel</button>
+	</div>
+      </form>
+    </div>
+    <script src="{{ options.compiled_jquery_url if options.compiled_jquery_url else "/static/js/jquery.js" }}" type="text/javascript" defer></script>
+    <script src="{{ options.compiled_js_url if options.compiled_js_url else "/static/js/base.js" }}" type="text/javascript" defer></script>
+    {% block bottom %}{% end %}
+  </body>
+</html>

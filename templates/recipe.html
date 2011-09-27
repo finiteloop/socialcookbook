@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe["title"] }} - Social Cookbook{% end %}
+
+{% block head %}
+ <head prefix="og: http://ogp.me/ns# cookbooksocial: http://ogp.me/ns/apps/cookbooksocial#">
+  <meta property="fb:app_id" content="{{ options.facebook_app_id }}"/> 
+  <meta property="og:type" content="cookbooksocial:recipe"/> 
+  <meta property="og:title" content="{{ recipe["title"] }}"/> 
+  <meta property="og:url" content="http://{{ request.host }}{{ reverse_url("recipe", recipe["slug"]) }}"/>
+  <meta property="og:image" content="{{ recipe["photo"]["thumb"]["url"] if recipe["photo"] else "http://d1udwvgzrtavb8.cloudfront.net/c23a4c1eedbdbf8d7ae37339ddbd3269e240fb71" }}"/>
+  {% if recipe["description"] %}
+    <meta property="og:description" content="{{ recipe["description"].replace("\n", " ") }}"/>
+  {% end %}
+{% end %}
+
+{% block body %}
+  <div class="breadcrumbs">
+    <a href="/">Social Cookbook</a> &rsaquo;
+    <a href="/category?name={% raw url_escape(recipe["category"]) %}">{{ recipe["category"] }}</a> &rsaquo;
+    <a href="{{ reverse_url("recipe", recipe["slug"]) }}">{{ recipe["title"] }}</a>
+  </div>
+  <div class="recipe">
+    <h1>{{ recipe["title"] }}</h1>
+    <div class="photos">
+      {% module RecipePhoto(recipe, width=300, height=200, max_height=300) %}
+      {% if current_user and recipe["author_id"] == current_user["id"] %}
+        <div class="edit">
+	  <a href="/edit?id={{ recipe["id"] }}">Edit recipe</a> - 
+	  <a href="" class="photoupload" recipe="{{ recipe["id"] }}">{{ "Change" if recipe["photo"] else "Add" }} photo</a>
+	</div>
+      {% end %}
+    </div>
+    <div class="meta">
+      {% if recipe["description"] %}
+        <div class="description">{% raw markdown(recipe["description"]) %}</div>
+      {% end %}
+      <div class="author">
+	<a href="{{ recipe["author"]["link"] }}" class="picture"><img src="{{ recipe["author"]["picture"] }}"></a>
+	<div class="body">Added by {% raw user_link(recipe["author"]) %} {{ locale.format_date(recipe["created"], relative=True, shorter=True) }}</div>
+      </div>
+      <div style="clear:left"></div>
+    </div>
+    <div class="text">
+      {% if recipe["ingredients"] %}
+        <h2>Ingredients</h2>
+        <div class="ingredients">{% raw markdown(recipe["ingredients"]) %}</div>
+      {% end %}
+      {% if recipe["instructions"] %}
+        <h2>Instructions</h2>
+        <div class="instructions">{% raw markdown(recipe["instructions"]) %}</div>
+      {% end %}
+      {% if options.comments %}
+        <h2>Comments</h2>
+        <fb:comments href="http://{{ request.host }}{{ request.path }}" num_posts="10" width="705"></fb:comments>
+      {% end %}
+    </div>
+  </div>
+{% end %}
+
+{% block sidebar %}
+  {% if current_user %}
+    {% module RecipeActions(recipe) %}
+    {% module RecipeInfo(recipe) %}
+    {% module ActivityStream(num=6) %}
+  {% end %}
+{% end %}
+
+{% block bottom %}
+  {% if options.comments %}
+    <div id="fb-root"></div>
+    <script src="http://connect.facebook.net/en_US/all.js#xfbml=1" defer></script>
+  {% end %}
+{% end %}
+

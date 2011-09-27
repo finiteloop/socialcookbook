@@ -1,0 +1,12 @@
+<div class="action ">
+  <a href="{{ user["link"] }}" class="picture"><img src="{{ user["picture"] }}"></a>
+  <div class="body">
+    {% raw user_link(user) %}
+    {% if action == "cooked" %}
+      cooked <a href="{{ reverse_url("recipe", recipe["slug"]) }}">{{ recipe["title"] }}</a>
+    {% else %}
+      added <a href="{{ reverse_url("recipe", recipe["slug"]) }}">{{ recipe["title"] }}</a> to <a href="{{ reverse_url("cookbook", user["id"]) }}">{{ user_possessive(user) }} cookbook</a>
+    {% end %}
+    <span class="time">{{ locale.format_date(date, relative=True, shorter=True) }}</span>
+  </div>
+</div>

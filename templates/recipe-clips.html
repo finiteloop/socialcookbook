@@ -1,0 +1,10 @@
+<div class="clips">
+  {% for i, recipe in enumerate(recipes) %}
+    {% if i % 2 == 0 and i > 0 %}</div><div class="clips">{% end %}
+    <div class="clip">
+      {% module RecipePhoto(recipe, width=150, height=150, href=reverse_url("recipe", recipe["slug"])) %}
+      <h3><a href="{{ reverse_url("recipe", recipe["slug"]) }}">{{ recipe["title"] }}</a></h3>
+      {% module RecipeContext(recipe, facepile_size=3, friend_list_size=1) %}
+    </div>
+  {% end %}
+</div>

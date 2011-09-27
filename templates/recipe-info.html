@@ -1,0 +1,11 @@
+<div class="info">
+  {% module RecipeContext(recipe) %}
+  <div class="stats">
+    {% if clip_count > 1 %}
+      <div><b>{{ clip_count }}</b> people have added this</div>
+    {% end %}
+    {% if cook_count > 1 %}
+      <div><b>{{ cook_count }}</b> people have cooked this</div>
+    {% end %}
+  </div>
+</div>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category }} - Social Cookbook{% end %}
+
+{% block body %}
+  <div class="breadcrumbs">
+    <a href="/">Social Cookbook</a> &rsaquo;
+    <a href="/category?name={% raw url_escape(category) %}">{{ category }}</a>
+  </div>
+  <div class="category">
+    <h1>{{ category }}</h1>
+    {% if recipes %}
+      <div class="section">
+	{% if friend_recipes %}
+	  <h2>Recently added recipes</h2>
+	{% end %}
+	{% module RecipeClips(recipes) %}
+      </div>
+    {% end %}
+    {% if friend_recipes %}
+      <div class="section">
+	<h2>Recipes from friends</h2>
+	{% module RecipeClips(friend_recipes) %}
+      </div>
+    {% end %}
+  </div>
+{% end %}
+
+{% block sidebar %}
+  <div class="actions">
+    <a href="/edit" class="button">Add a new recipe</a>
+  </div>
+  {% module ActivityStream(num=10) %}
+{% end %}

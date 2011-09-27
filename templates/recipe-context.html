@@ -1,0 +1,11 @@
+<div class="context">
+  {% module Facepile(friends + [current_user] if clipped else friends, num=facepile_size) %}
+  <div class="names">
+    {% if len(friends) == 1 %}
+      {% raw user_link(friends[0]) %} {{ "also has" if clipped else "has" }} this recipe in {{ user_possessive(friends[0]) }} cookbook.
+    {% else %}
+      {% raw friend_list(friends, size=friend_list_size) %} {{ "also have" if clipped else "have" }} this recipe in their cookbooks.
+    {% end %}
+  </div>
+</div>
+
