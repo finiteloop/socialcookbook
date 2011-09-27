@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import os.path
-
 port = 8000
 cookie_secret = ""
 

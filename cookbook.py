@@ -35,7 +35,6 @@ import urlparse
 
 from tornado.options import define, options
 
-define("administrators", multiple=True, default=["220439"])
 define("aws_s3_bucket")
 define("aws_cloudfront_host")
 define("compiled_css_url")
@@ -100,11 +99,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_current_user(self):
         uid = self.get_secure_cookie("uid")
-        user = self.backend.get_user(uid) if uid else None
-        if user and user["id"] in options.administrators and \
-           self.get_argument("uid", None):
-            user = self.backend.get_user(self.get_argument("uid"))
-        return user
+        return self.backend.get_user(uid) if uid else None
 
     def get_login_url(self, next=None):
         if not next:
