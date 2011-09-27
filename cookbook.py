@@ -155,7 +155,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def friend_list(self, friends, size=3):
         if len(friends) == 1:
-            return self.use_link(friends[0], True, True)
+            return self.user_link(friends[0], True, True)
         elif len(friends) > size + 1:
             return ", ".join(self.user_link(f, True, i == 0) for i, f in
                              enumerate(friends[:size])) + \
