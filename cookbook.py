@@ -94,9 +94,6 @@ class BaseHandler(tornado.web.RequestHandler):
     def backend(self):
         return Backend.instance()
 
-    def is_ajax(self):
-        return self.request.headers.get("X-Requested-With") == "XMLHttpRequest"
-
     def get_current_user(self):
         uid = self.get_secure_cookie("uid")
         return self.backend.get_user(uid) if uid else None
@@ -514,6 +511,7 @@ class Backend(object):
         return dict((a["id"], a) for a in users)
 
     def create_user(self, profile, access_token):
+        profile.setdefault("gender", "male")
         self.db.execute(
             "INSERT IGNORE INTO cookbook_users (id,name,link,gender,"
             "access_token,created) VALUES (%s,%s,%s,%s,%s,UTC_TIMESTAMP) "

@@ -14,6 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+"""A Tornado-based Amazon S3 client"""
+
 import base64
 import email.utils
 import hashlib
